@@ -106,7 +106,7 @@ a) Python is too slow so there is buffer overrun, or
 b) The cable or transmission is faulty
 
 I suspect a) is likely true. One easy fix is to turn on ACK per frame. I 
-fully expect it to kill throughput, [as Paul mentioned](https://forum.pjrc.com/index.php?threads/transfer-to-pc.73502/post-331440), but I just wanted to validate that there was no other issue to blame. Sure enough, the test passed.
+fully expect it to kill throughput, [as Paul mentioned](https://forum.pjrc.com/index.php?threads/transfer-to-pc.73502/post-331440), but I just wanted to validate that there was no other issue to blame.
 
 Aha! So this passed:
 
