@@ -1,12 +1,12 @@
 ---
 layout: post
 title: "Teensy 4.1 USB Serial: What is the maximum throughput over USB serial?"
-date: 2026-05-18
+date: 2026-05-19
 categories: embedded
 series: teensy-serial
 ---
 
-As part of a research project, I'm in charge of developing software/firmware for a real-time data acquisition system using Teensy 4.1. This system is interesting in that it has to sample data at several hundred kilohertz, much higher than we typically handle in most of our systems. This comes with its own set of challenges, and I'll detail a few of those across a few posts on this blog. 
+As part of a research project, I'm in charge of developing software/firmware for a real-time data acquisition system using [Teensy 4.1](https://www.pjrc.com/store/teensy41.html). This system is interesting in that it has to sample data at several hundred kilohertz, much higher than we typically handle in most of our systems. This comes with its own set of challenges, and I'll detail a few of those across a few posts on this blog. 
 
 For this post, I want to focus specifically on the maximum throughput that one can achieve **reliably** using an out-of-the-box Teensy 4.1 and serial port communication. This is important for me to know to ensure that we'll get the data off of the system as soon as we can without any data loss, and to establish guidelines and test harnesses for the project. Seems like a simple answer, right? After all, Teensy 4.1 [advertises 480 Mbits/s connection](https://www.pjrc.com/store/teensy41.html#specs), and [Paul and other well-known contributors](https://forum.pjrc.com/index.php?threads/recommended-baud-rate-on-teensy-4-1.69839/post-302810) occasionally have explicitly mentioned the same fact:
 > Teensy transmits at USB Speed. The baud rate is ignored. And USB Serial on t4.x is very fast (T3.x connects a USB full speed 12MBS, where the T4.x connects at USB high-speed 480mbs)
@@ -17,7 +17,7 @@ Well, the answer is surprisingly not so clear. In fact, there’s very little in
 
 The only two threads I found that are relevant here are:
 1. [This one that explicitly shows some benchmark numbers](https://forum.pjrc.com/index.php?threads/teensy-4-1-coding-guidance-for-usb-serial-communication.76589/) 
->  The Teensy 4.1 supports USB 2.0 High Speed (480 Mbps = 60 MB/s), but I never reach anywhere close to that.
+>  The Teensy 4.1 supports USB 2.0 High Speed (480 Mbps = 60 MB/s), but I never reach anzywhere close to that.
 > 
 > My best observed speeds:
 PC → Teensy: 7.38 MB/s (using PySerial)
