@@ -1,4 +1,28 @@
+title: Shri's Technical Blog
+description: >
+  Systems engineer working across the stack: hardware-level acquisition, signal processing, and edge inference for real-time biomedical systems.
+url: "https://stpr-dev.github.io"
+
 theme: minima
-title: stpr-dev's personal blog
-description: This is where I share cool stuff I work on!
-author: stpr-dev
+
+minima:
+  skin: dark  # options: classic, dark, solarized, solarized-dark
+
+author:
+  name: Shri  # replace with your name
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Exclude from build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+
+# Permalink style: /category/year/month/day/title/
+permalink: /:categories/:year/:month/:day/:title/
+
+# Show excerpts on index
+show_excerpts: true
