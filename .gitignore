@@ -1,0 +1,8 @@
+scripts/**
+.venv/
+.cadence/
+.idea/
+
+pyproject.toml
+uv.lock
+/scripts
