@@ -26,3 +26,6 @@ permalink: /:categories/:year/:month/:day/:title/
 
 # Show excerpts on index
 show_excerpts: true
+
+kramdown:
+  math_engine: null  # stops kramdown from touching math blocks
