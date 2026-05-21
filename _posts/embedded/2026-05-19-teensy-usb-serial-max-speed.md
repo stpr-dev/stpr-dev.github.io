@@ -127,18 +127,13 @@ different frame lengths. Maybe it could reveal something?
 I wrote a PowerShell script to automate it. Surprisingly, a few of them ran with no 
 issues. The results were:
 
-| Frame Size (bytes) | ACK | Total Time (s) | Transfer Rate (MB/s) |
-|--------------------|-----|----------------|----------------------|
-| 128                | No  | 4.4            | 3.7                  |
-| 256                | No  | 7.2            | 4.6                  |
-| 512                | No  | 13.0           | 5.1                  |
-| 1024               | No  | 24.8           | 5.4                  |
-| 2048               | No  | -              | -                    |
-| 128                | Yes | 13.9           | 1.2                  |
-| 256                | Yes | 15.5           | 2.1                  |
-| 512                | Yes | 28.4           | 2.3                  |
-| 1024               | Yes | 40.9           | 3.2                  |
-| 2048               | Yes | 68.4           | 3.9                  |
+| Frame Size (bytes) | Total Time No-ACK (s) | Total Time ACK (s) | Throughput No-ACK (MB/s) | Throughput ACK (MB/s) |
+|--------------------|-----------------------|--------------------|--------------------------|-----------------------|
+| 128                | 4.4                   | 13.9               | 3.7                      | 1.2                   |
+| 256                | 7.2                   | 15.5               | 4.6                      | 2.1                   |
+| 512                | 13.0                  | 28.4               | 5.1                      | 2.3                   |
+| 1024               | 24.8                  | 40.9               | 5.4                      | 3.2                   |
+| 2048               | —                     | 68.4               | —                        | 3.9                   |
 
 Oh. Very interesting. The no-ACK version does indeed pass, and it seems to 
 consistently pass at *lower* frame lengths. This was very surprising to me: I 
@@ -182,24 +177,20 @@ there is indication that the RNG is indeed the bottleneck.
 
 Regardless, here are the results of the tests with the pre-generated values:
 
-| Frame Size (bytes) | ACK | Total Time (s) | Transfer Rate (MB/s) |
-|--------------------|-----|----------------|----------------------|
-| 128                | No  | 2.9            | 5.6                  |
-| 256                | No  | 2.9            | 11.2                 |
-| 512                | No  | 3.5            | 18.6                 |
-| 1024               | No  | 4.8            | 27.4                 |
-| 2048               | No  | 8.3            | 32.3                 |
-| 128                | Yes | 13.5           | 1.2                  |
-| 256                | Yes | 13.6           | 2.4                  |
-| 512                | Yes | 13.9           | 4.8                  |
-| 1024               | Yes | 14.4           | 9.2                  |
-| 2048               | Yes | 16.0           | 16.6                 |
+| Frame Size (bytes) | Total Time No-ACK (s) | Total Time ACK (s) | Throughput No-ACK (MB/s) | Throughput ACK (MB/s) |
+|--------------------|-----------------------|--------------------|--------------------------|-----------------------|
+| 128                | 2.9                   | 13.5               | 5.6                      | 1.2                   |
+| 256                | 2.9                   | 13.6               | 11.2                     | 2.4                   |
+| 512                | 3.5                   | 13.9               | 18.6                     | 4.8                   |
+| 1024               | 4.8                   | 14.4               | 27.4                     | 9.2                   |
+| 2048               | 8.3                   | 16.0               | 32.3                     | 16.6                  |
 
 
 And there it is! Few interesting points to note:
 - With frame sizes >=1024 and no-ACK, we were able to achieve >25MB/s. 2048 seems 
   the maximum stop but the tests were flaky - sometimes they failed. It wasn't 100% 
   reproducible but of the 10 runs I ran, around 30% failed. 
+- Sizes <=512 seem to take about the same time, indicating potential syscall overhead.
 - The ACK version still has quite poor throughput, anywhere from 3-5x worse. 
 
 # Conclusion
