@@ -87,7 +87,7 @@ Next up, the Thinkpad:
 | 2048               | -                         | 31.2                    |
 | 4096               | -                         | 31.2                    |
 
-For the Thinkpad, I was unable to get the test to pass at frame sizes larger than 1024 bytes on Windows. Same as before, I saw errors from 512 frame size onwards on Windows, but on reruns, I was able to get past it. On Linux, the tests chugged along with no issues. Once again, the Linux tests performed better than Windows and I did not observe and errors. The Thinkpad was actually approaching desktop-level performance on USB with Linux, something I didn't see on Windows. I even made sure to turn on "ultra performance mode" on the laptop to disable any energy-saving behaviour on Windows. 
+For the Thinkpad, I was unable to get the test to pass at frame sizes larger than 1024 bytes on Windows. Same as before, I saw errors from 512 frame size onwards on Windows, but on reruns, I was able to get past it. On Linux, the tests chugged along with no errors. The Thinkpad was actually approaching desktop-level performance on USB with Linux, something I didn't see on Windows. I even made sure to turn on "ultra performance mode" on the laptop to disable any energy-saving behaviour on Windows. 
 
 
 Finally, the Yoga Book. This one was more of a curiosity for me as the device is not as high-performance as the other devices, but I wanted to see how it would perform to provide recommendations for the project.
