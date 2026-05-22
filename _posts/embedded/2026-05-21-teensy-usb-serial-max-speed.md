@@ -22,7 +22,7 @@ My tests in the last blogs asked Teensy to send 131,072 frames, which for lower 
 For Linux (I know it's a kernel and not the entire OS, but I am using the colloquial term here), I download the lastest [Arch Linux](https://archlinux.org/download/) (btw) ISO (2026-05-01 image) and loaded it onto a USB drive with [Rufus](https://rufus.ie/) (v4.14). I also copied over the static Go binary from [this release](https://github.com/stpr-dev/teensy41-serial-companion-go/releases/tag/v0.1.0-alpha) to the USB drive. I didn't bother with the Python version because a) setting up Python for live Linux is not something I am interested in subjecting myself to when the awesome Go binary is available, and b) pre-allocation would not be feasible for these sizes. For each computer I tested, I used the default Windows 11 install that was on it, and then once it was done, rebooted to the live USB and ran the test from the terminal.
 
 
-The four computers I tested these on consist of two high-performance desktops (one with AMD 7900X and the other with 9800X3D; both with different motherboards as well); and two laptops: one Thinkpad and one Lenovo Yoga Book. This gives me a good variety of relatively high-end desktops to an arguably low-powered Yoga Book. I am going to focus on the no-ACK version (why I chose to only focus on this will become clear very soon). 
+The four computers I tested these on consist of two high-performance desktops: one with AMD 7900X and the other with AMD 9800X3D. One thing to note is that both use different motherboards/chipsets - I wanted to mention this since I know that they are both AM5-based CPUs so they can hypothetically use the same motherboard/chipset. Two different chipsets would at least give some variability in any weird IO quirks. The two laptops were: one Lenovo Thinkpad and one Lenovo Yoga Book, both using Intel CPUs. This gives me a good variety of relatively high-end desktops to an arguably low-powered Yoga Book, and CPUs/chipsets from both major vendors. I am going to focus on the no-ACK version (why I chose to only focus on this will become clear very soon). 
 
 Now let’s take a look at the results. First, let's look at the 7900X desktop:
 
@@ -65,9 +65,9 @@ OK, this is maybe a fluke. Let's look at a different machine. Here is the 9800X3
 | 4096               | 32.4*                     | 36.0                    |
 
 
-Even worse on Windows. The lower frame sizes are even slower here. On Linux, the pattern is more or less the same as the first machine. 
+Even worse on Windows. The lower frame sizes are even slower here. On Linux, the pattern is more or less the same as the first machine with not errors across multiple runs. 
 
-I even encountered my first weird error:
+I even encountered my first weird error on Windows:
 
 ```markdown
 2026/05/21 13:37:10 Retrying read after error: read returned 0 bytes after 13/1024
@@ -87,10 +87,10 @@ Next up, the Thinkpad:
 | 2048               | -                         | 31.2                    |
 | 4096               | -                         | 31.2                    |
 
-For the Thinkpad, I was unable to get the test to pass at frame sizes larger than 1024 bytes on Windows. Same as before, I saw errors from 512 frame size onwards on Windows, but on reruns, I was able to get past it. On Linux, the tests chugged along with no issues. Once again, the Linux tests performed better than Windows, and the Thinkpad was actually approaching desktop level performance on USB, something I didn't see on Windows at all. I made sure to turn on "ultra performance mode" on the laptop to disable any energy-saving behaviour on Windows. 
+For the Thinkpad, I was unable to get the test to pass at frame sizes larger than 1024 bytes on Windows. Same as before, I saw errors from 512 frame size onwards on Windows, but on reruns, I was able to get past it. On Linux, the tests chugged along with no issues. Once again, the Linux tests performed better than Windows and I did not observe and errors. The Thinkpad was actually approaching desktop-level performance on USB with Linux, something I didn't see on Windows. I even made sure to turn on "ultra performance mode" on the laptop to disable any energy-saving behaviour on Windows. 
 
 
-Finally, the Yoga Book. This one was more of a curiosity for me as the device is not as high-performance as the other devices, but I wanted to see how it would perform. 
+Finally, the Yoga Book. This one was more of a curiosity for me as the device is not as high-performance as the other devices, but I wanted to see how it would perform to provide recommendations for the project.
 
 | Frame Size (bytes) | Throughput Windows (MB/s) | Throughput Linux (MB/s) |
 |--------------------|---------------------------|-------------------------|
@@ -101,7 +101,7 @@ Finally, the Yoga Book. This one was more of a curiosity for me as the device is
 | 2048               | -                         | 30.8                    |
 | 4096               | -                         | 30.8                    |
 
-Oooh boy. So **none** of the Windows tests passed. I tried running my PowerShell script multiple times, but it always failed right at the beginning at 128 bytes. I get two errors:
+Oooh boy. So **none** of the Windows tests passed. I tried running my PowerShell script multiple times, but it always failed right at the beginning at 128 bytes of frame length. I get two errors on Windows:
 
 ```markdown
 2026/05/21 15:25:33 Retrying read after error: read returned 0 bytes after 13/128
@@ -115,12 +115,12 @@ Or the more classic error, which indicates full frames being dropped:
 2026/05/21 15:26:34 [Sample 448065] Failed to read full frame: read returned 0 bytes after 0/128
 ```
 
-Linux once again passed with flying colours.
+Linux once again passed with flying colours, no errors reported and really good throughput.
 
 # Conclusion
 So what have I learnt so far?
 
-First, let me answer the question that I used to title this miniseries: What is the maximum USB serial throughput for a Teensy 4.1 with a USB? Or more precisely: if you are continuously dumping data from Teensy with the intent of reading that data from a PC attached to the Teensy and without sending an ACK back, what is the throughput you expect to see? Based on measurements across 4 machines, it is somewhere between **30MB/s - 36MB/s**. Some nuance to this figure, as we've seen in these posts, mainly around reliability.
+First, let me answer the question that I used to title this miniseries: What is the maximum USB serial throughput for a Teensy 4.1 with a USB? Or more precisely: if you are continuously dumping data from Teensy with the intent of reading that data from a PC attached to the Teensy and without sending an ACK back, what is the throughput you expect to see? Based on measurements across four machines, it is somewhere between **30MB/s - 36MB/s**. Some nuance to this figure, as we've seen in these posts, mainly around reliability.
 
 The number above is assuming **ideal conditions** where you don't lose any data. I've learnt that Windows is absolutely terrible in this regard. I was able to get significantly better performance on every machine with Linux. Heck, Linux could achieve almost desktop-like throughput on laptops. You could critique my method of using an Arch Live USB commandline-only environment vs a full desktop Windows, which I grant is absolutely fair. For these tests, the machines I was working with were not mine, so I couldn't install Linux with a full Desktop Environment like KDE. At some point, perhaps I will try it out on the same machine with and without a DE running to see how much impact that has. I suspect that I will be seeing little of a difference in the results. So **if you want to achieve max performance and no dropped data, Linux is mandatory**.
 
