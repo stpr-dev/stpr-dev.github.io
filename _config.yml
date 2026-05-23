@@ -3,10 +3,12 @@ description: >
   Systems engineer working across the stack: hardware-level acquisition, signal processing, and edge inference for real-time biomedical systems.
 url: "https://stpr-dev.github.io"
 
-theme: minima
+#theme: minima
+#
+#minima:
+#  skin: dark  # options: classic, dark, solarized, solarized-dark
 
-minima:
-  skin: dark  # options: classic, dark, solarized, solarized-dark
+remote_theme: pages-themes/hacker@v0.2.0
 
 author:
   name: Shri  # replace with your name
@@ -14,6 +16,7 @@ author:
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-remote-theme
 
 # Exclude from build
 exclude:
@@ -27,5 +30,7 @@ permalink: /:categories/:year/:month/:day/:title/
 # Show excerpts on index
 show_excerpts: true
 
-kramdown:
-  math_engine: null  # stops kramdown from touching math blocks
+show_downloads: false
+
+#kramdown:
+#  math_engine: null  # stops kramdown from touching math blocks
