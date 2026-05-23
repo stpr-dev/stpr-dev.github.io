@@ -8,7 +8,7 @@ series: teensy-serial
 
 This is part 3 of my series on the Teensy 4.1 USB serial throughput. Read:
 - [part 1](https://stpr-dev.github.io/embedded/2026/05/19/teensy-usb-serial-max-speed/) for a bit more background on what I want to achieve. 
-- [part 2](https://stpr-dev.github.io/embedded/2026/05/20/teensy-usb-serial-max-speed/) for benchmark numbers to set some context.
+- [part 2](https://stpr-dev.github.io/embedded/2026/05/20/teensy-usb-serial-max-speed-part-2/) for benchmark numbers to set some context.
 
 In short, I am trying to benchmark the throughput and reliability of the Teensy 4.1 USB serial interface.
 
