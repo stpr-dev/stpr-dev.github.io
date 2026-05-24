@@ -13,8 +13,6 @@ This is part 4 of my series on the Teensy 4.1 USB serial throughput. Read:
 
 As a followup to part 3, I decided to look into latency numbers as this might provide some insights into the timing jitter. I took the results I logged across the four systems I used in the last experiment and made some plotly plots to see CDF of latency. I also wanted to see if integrating these plots into a GH blog page works seamlessly. Turns out, it is easier than I thought!
 
-Without further ado, here are the results:
-
 <iframe 
   src="/assets/plots/2026-05-23/index.html"
   width="100%"
