@@ -16,7 +16,7 @@ As a followup to part 3, I also decided to look into latency numbers as that mat
 <iframe 
   src="/assets/plots/2026-05-23/index.html"
   width="100%"
-  height="850px"
+  height="1000px"
   frameborder="0"
   scrolling="no">
 </iframe>
