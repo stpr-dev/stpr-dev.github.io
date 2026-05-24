@@ -31,7 +31,7 @@ Teensy → PC: 20.97 MB/s (without send_now())
 2. [And this comment from Paul](https://forum.pjrc.com/index.php?threads/can-teensy-4-1-bit-stream-at-480mbps-with-usb-2.74782/post-341468)
 > The maximum theoretical USB 480 Mbit / second speed with protocol overhead is 53,248,000 bytes/second. See page 55 (83rd page in the PDF) of the USB 2.0 spec for details. But that doesn't include data-dependent bitstuffing overhead or trade-offs all USB host controllers make for bandwidth planning to ensure SOF packets transmit precisely on schedule. So in practice you’ll see even the best USB hardware achieve only some fraction of this theoretical maximum. We’ve often seen about 50% with this benchmark which includes binary to ascii conversion overhead, though results vary quite substantially depending on which software on the PC side receives the data.
 
-(Also, shoutout to this [interesting thread](https://forum.pjrc.com/index.php?threads/high-speed-usb-data-custom-isochronous-usb-descriptor.64481/), that seems very similar to what I am doing. Some interesting ideas for custom USB descriptors and settings, but that is something I will look at perhaps in the future).
+(Also, shoutout to this [interesting thread](https://forum.pjrc.com/index.php?threads/high-speed-usb-data-custom-isochronous-usb-descriptor.64481/) that seems very similar to what I am doing. Some interesting ideas for custom USB descriptors and settings, but that is something I will look at perhaps in the future).
 
 OK, so these two do have some numbers to go off of: ~20 MB/s from the first one and ~25 MB/s (from the 50% number Paul mentioned if we take his throughput with overhead included) from the second one (both are surprisingly lower than I expected, which I found interesting, but they still satisfy the project requirements). The first one is that one I'll start with since the stack that I inherited uses `PySerial`. So let's see if I can replicate these numbers.
 
@@ -39,23 +39,23 @@ OK, so these two do have some numbers to go off of: ~20 MB/s from the first one
 To test this out, I started sketching out a simple test harness that mirrors the project's expected workflow. I iterated over the test harness design for a few days and came up with a simple, but effective, scheme. The full harness is in [this repository](https://github.com/stpr-dev/teensy41-serial-test-firmware). It is relatively simple — the Teensy waits for a handshake from the PC (more specifically, a Python script). The handshake is expected to be nine bytes, with the following format:
 - Bytes 0–3: LE 32-bit integer frame size (M)
 - Bytes 4–7: LE 32-bit integer number of frames to send (N)
-- Byte 8: Whether to wait for ACK from host per frame sent (0 for no, non-zero for yes)
+- Byte 8: Whether to wait for ACK from host per frame sent before sending the next one (0 for no, non-zero for yes)
 
 This handshake itself serves as our trigger. This doesn't include the notion of sampling rate since I was hoping to actually measure the upper bound of the max sampling rate that can be achieved. Wait, how would that work? Well, since we're measuring the USB transfer rate, it also indirectly tells us the maximum sampling rate that can be used reliably. If I can send N frames of size M bytes each for a total of T seconds, then the max sampling rate is: (M x N) / T Hz. This of course assumes `uint8_t` samples, adjust accordingly for different data widths.
 
 Now on the *data* side, I needed a datastream that'll allow me to test that the data I’m receiving is correct: on a byte level per frame, as well as ordering and validity across frames. Now I could have done a repeated pattern of bytes, but that’d be boring. Instead, I decided to do something fun and explore pseudorandom data. I found [this website](https://www.pcg-random.org/posts/some-prng-implementations.html) which has a lot of information on PRNGs in general, but I decided to go with what the website called ["JSF: Bob Jenkins’s Small/Fast Chaotic PRNG"](https://burtleburtle.net/bob/rand/smallprng.html). It seemed simple enough to implement in any language as it mostly appears to contain few bitshift and logical operations, which should also be fast on both the PC and Teensy. I also took the opportunity to try out a couple of things I've been wanting to do:
 - Setup [Platform IO for Teensy](https://docs.platformio.org/en/latest/platforms/teensy.html)  for [CLion](https://www.jetbrains.com/clion/). I am a massive fan of JetBrains IDEs (PyCharm/CLion/Rider, et al.) and have been using it for a while now.
 - Use Claude Code for the first time to do some basic automated coding for simple tasks.
-- Fully integrate [uv](https://docs.astral.sh/uv/) on Python side for package management and dependency resolution. Big fan of `uv`, it really solved a major  annoyance I have with `pip` and `requirements.txt` files. Most of the stuff I did with it were on existing projects, so I figured it would be a good time to try it out on a new project.
+- Fully integrate [uv](https://docs.astral.sh/uv/) on the Python side for package management and dependency resolution. Big fan of `uv`, it really solved a major annoyance I have with `pip` and `requirements.txt` files. Most of the stuff I did with it were on existing projects, so I figured it would be a good time to try it out on a new project.
 
 I asked CC to implement `JSF32` in C++ and Python. I tested both of them quickly to ensure that they provided the same outputs. I included the C++ version with the Teensy firmware. As long as I use the same seed on the client side, it should generate the same outputs, and I can use this to validate samples I am receiving from Teensy on-the-fly. 
 
-After receiving the handshake, the Teensy now sends a sequence of frames, each containing pseudorandom data generated by the JSF32 PRNG. Each frame (expected to be at least 4 bytes and the size is expected to be a multiple of 4) contains consecutive 32-bit integers (LE) generated by the JSF32 PRNG. Fairly straightforward.
+After receiving the handshake, the Teensy now sends a sequence of frames, each containing pseudorandom data generated by the JSF32 PRNG. Each frame (expected to be at least four bytes and the frame size is expected to be a multiple of 4) contains consecutive 32-bit integers (LE) generated by the JSF32 PRNG. Fairly straightforward.
 
 Now that the firmware side is done, I implemented a simple Python client that can send the handshake and receive the data. The client is responsible for a) validating the received data against the pseudorandom sequence generated by the JSF32 PRNG, ensuring data integrity, and b) timing the process to calculate throughput. The Python script is in [this repository](https://github.com/stpr-dev/teensy41-serial-companion-python). 
 
 # First Pass
-I used the basic example for this. No real optimizations were done as I felt that the code was relatively straightforward (spoiler alert: probably not).
+I used the basic example for this. No real optimisations were done as I felt that the code was relatively straightforward (spoiler alert: probably not).
 
 ## Results
 I did the testing on my desktop with an AMD 7900X PC with 64GB RAM and the USB3 port. The PC should be plenty fast. I initially set a frame size of 2048 bytes (value picked from [this post](https://forum.pjrc.com/index.php?threads/increase-the-usb-buffer-size-in-teensy-4-1.73656/post-332404) and asked for 2^(17) = 131,072 frames to be transmitted.
@@ -114,7 +114,7 @@ Oh. **Very interesting**. The no-ACK version does indeed pass, and it seems to c
 1. The ACK version's throughput is half as fast as the no-ACK version.
 2. Even the no-ACK version's throughput is substantially lower than what I was targetting.
 
-Now technically, per project requirements, 5MB/s would work, so the 512 no-ACK version is sufficient for our needs. However, I was still not entirely happy with the throughput of the no-ACK version, as it was significantly lower than the target. I decided to investigate further to see if there were any optimizations that could be made to improve the performance.
+Now technically, per project requirements, 5MB/s would work, so the 512 no-ACK version is sufficient for our needs. However, I was still not entirely happy with the throughput of the no-ACK version, as it was significantly lower than the target. I decided to investigate further to see if there were any optimisations that could be made to improve the performance.
 
 # Second Pass
 When rerunning the tests, I noticed something interesting. I used the LED indicator on the Teensy to tell me when it started/stopped sending the data. While this was happening, I was observing the console output and noted that the Teensy finished significantly before the console output stopped when using the no-ACK version. This got worse with increasing frame sizes, suggesting that the Teensy was able to send the data faster than Python could keep up with.
@@ -127,7 +127,7 @@ Average time per sample: 664.8639 ns
 
 Doesn't seem like a lot, but if we were to multiply that by 512, we are looking at 338 microseconds per frame. This doesn't sound like much but it is in the same order of magnitude as the processing time per frame. So this could potentially be a bottleneck. 
 
-I copied the script and made one modification: I pre-generated the expected RNG values I was expecting ahead of time and stored them in an array. I then reran the tests. Now while running it, I did notice that it took a significant amount of time to generate the values, that is an indication that the RNG is indeed the bottleneck. 
+I copied the script and made one modification: I pre-generated the expected RNG values I was expecting ahead of time and stored them in an array. I then reran the tests. Now while running it, I did notice that it took a significant amount of time to generate the values. This is an indication that the RNG is indeed the bottleneck. 
 
 Regardless, here are the results of the tests with pre-generated values:
 
@@ -140,8 +140,8 @@ Regardless, here are the results of the tests with pre-generated values:
 | 2048               | 8.3                   | 16.0               | 32.3                     | 16.6                  |
 
 
-And there it is! Few interesting points to note:
-- With frame sizes >=1024 and no-ACK, we were able to achieve >25MB/s. 2048 seems the maximum stop but the tests were flaky - sometimes they failed. It wasn't 100% reproducible but of the 10 runs I ran, around 30% failed. 
+And there it is! A few interesting points to note:
+- With frame sizes >=1024 and no-ACK, we were able to achieve >25MB/s. 2048 seems to have the max throughput, but the tests were flaky – sometimes they failed. Of the 10 runs I ran, around 30% randomly failed. Not entirely happy with the results, but it's a start.
 - Sizes <=512 seem to take about the same time, indicating potential syscall overhead.
 - The ACK version still has quite poor throughput, anywhere from 3-5x worse. 
 
