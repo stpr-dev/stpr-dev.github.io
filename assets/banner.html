@@ -1,0 +1,132 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .wrap { background: #1e1e2e; border-radius: 12px; overflow: hidden; font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace; }
+  .titlebar { background: #181825; padding: 10px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #313244; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .wintitle { font-size: 11px; color: #6c7086; margin: 0 auto; font-family: sans-serif; letter-spacing: 0.04em; }
+  .body { padding: 20px 24px 24px; }
+  .row { display: flex; align-items: baseline; font-size: 13px; line-height: 1.7; flex-wrap: wrap; }
+  .host { color: #89b4fa; }
+  .at { color: #6c7086; }
+  .path { color: #a6e3a1; }
+  .pr { color: #f38ba8; font-weight: 600; margin: 0 6px; }
+  .cmd { color: #cdd6f4; }
+  .flag { color: #b4befe; }
+  .pipe-sym { color: #6c7086; margin: 0 4px; }
+  .continuation { color: #45475a; margin-right: 6px; }
+  .cmd-indent { padding-left: 2ch; }
+
+  .pipeline { display: flex; align-items: center; gap: 6px; margin: 16px 0 12px; flex-wrap: nowrap; }
+  .pblock { background: #313244; border: 1px solid #45475a; border-radius: 6px; padding: 7px 12px; }
+  .pblock-name { color: #a6e3a1; font-size: 11px; font-weight: 600; display: block; margin-bottom: 2px; }
+  .pblock-val { color: #6c7086; font-size: 10px; display: block; line-height: 1.5; }
+  .pblock-input { background: #252535; border: 1px solid #45475a; border-radius: 6px; padding: 6px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+  .pblock-input-label { color: #6c7086; font-size: 10px; font-weight: 600; letter-spacing: 0.05em; }
+  .pipe-arrow { color: #45475a; font-size: 14px; flex-shrink: 0; }
+
+  .log { font-size: 11.5px; line-height: 1.85; }
+  .log-ts { color: #45475a; }
+  .log-info { color: #a6e3a1; font-weight: 600; }
+  .log-warn { color: #f9e2af; font-weight: 600; }
+  .log-dim { color: #585b70; }
+  .log-ok { color: #a6adc8; }
+  .log-run { color: #6c7086; }
+
+  .result-line { margin-top: 14px; font-size: 13px; display: flex; align-items: center; gap: 10px; padding-left: 1ch; }
+  .result-badge { background: #313244; border: 1px solid #cba6f780; border-radius: 20px; padding: 5px 16px; display: inline-flex; align-items: center; gap: 10px; }
+  .result-val { color: #cba6f7; font-weight: 700; font-size: 14px; letter-spacing: 0.03em; }
+  .result-prob { color: #a6e3a1; font-size: 12px; }
+  .result-aside { color: #585b70; font-size: 11px; font-style: italic; }
+  .prompt-return { font-size: 13px; line-height: 1.7; margin-top: 6px; }
+</style>
+
+<div class="wrap">
+  <div class="titlebar">
+    <div class="dot" style="background:#f38ba8;"></div>
+    <div class="dot" style="background:#f9e2af;"></div>
+    <div class="dot" style="background:#a6e3a1;"></div>
+    <span class="wintitle">emg_pipeline.py — zsh</span>
+  </div>
+  <div class="body">
+
+    <div class="row">
+      <span class="host">biosignals</span><span class="at">@</span><span class="host">edge</span><span class="pr" style="margin-left:6px;">$</span>
+      <span class="cmd">uv run emg_pipeline.py <span class="flag">--source</span> /dev/kitty0 <span class="flag">--fs</span> 1kHz <span class="flag">\</span></span>
+    </div>
+    <div class="row cmd-indent">
+      <span class="cmd"><span class="flag">--duration</span> 5s <span class="flag">--filter</span> bpf <span class="flag">--notch</span> 60 <span class="flag">--infer</span> onnx</span>
+    </div>
+
+    <div class="pipeline">
+      <!-- Kitty input block -->
+      <div class="pblock-input">
+        <span class="pblock-input-label">input</span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 110" width="44" height="48">
+          <g opacity="0.9">
+            <path d="M 0,60 L 14,60 L 17,53 L 20,70 L 23,57 L 26,60
+                     L 23,39 L 15,23 L 36,31
+                     A 26,26 0 0,1 64,31
+                     L 85,23 L 77,39
+                     L 74,60 L 77,57 L 80,70 L 83,53 L 86,60 L 100,60"
+                  fill="none" stroke="#f38ba8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <ellipse cx="38" cy="56" rx="4.5" ry="3" fill="#f38ba8" opacity="0.85"/>
+            <ellipse cx="38" cy="56" rx="3" ry="2.2" fill="#89dceb"/>
+            <ellipse cx="38" cy="56" rx="1" ry="2" fill="#1e1e2e"/>
+            <ellipse cx="62" cy="56" rx="4.5" ry="3" fill="#f38ba8" opacity="0.85"/>
+            <ellipse cx="62" cy="56" rx="3" ry="2.2" fill="#89dceb"/>
+            <ellipse cx="62" cy="56" rx="1" ry="2" fill="#1e1e2e"/>
+            <path d="M 32,62 L 16,58" fill="none" stroke="#89dceb" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M 32,64 L 15,64" fill="none" stroke="#89dceb" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M 32,66 L 16,70" fill="none" stroke="#89dceb" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M 68,62 L 84,58" fill="none" stroke="#89dceb" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M 68,64 L 85,64" fill="none" stroke="#89dceb" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M 68,66 L 84,70" fill="none" stroke="#89dceb" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M 48,63 L 50,61 L 52,63 Z" fill="#89dceb"/>
+            <path d="M 46,65 Q 50,70 54,65" fill="none" stroke="#89dceb" stroke-width="1.8" stroke-linecap="round"/>
+          </g>
+        </svg>
+        <span style="color:#585b70; font-size:9px;">/dev/kitty0</span>
+      </div>
+
+      <span class="pipe-arrow">→</span>
+
+      <div class="pblock">
+        <span class="pblock-name">daq</span>
+        <span class="pblock-val">1 kHz · 16ch · uint16<br>buf=256 samp</span>
+      </div>
+      <span class="pipe-arrow">→</span>
+      <div class="pblock">
+        <span class="pblock-name">dsp</span>
+        <span class="pblock-val">bpf 20–450 Hz<br>notch 60 Hz · order=4</span>
+      </div>
+      <span class="pipe-arrow">→</span>
+      <div class="pblock">
+        <span class="pblock-name">infer</span>
+        <span class="pblock-val">emg_intent_v3.onnx<br>int8 · 12 ms</span>
+      </div>
+    </div>
+
+    <div class="log">
+      <div><span class="log-info">[INFO] </span><span class="log-ok"> Connected to /dev/kitty0. Purr-ipheral online.</span></div>
+      <div><span class="log-info">[INFO] </span><span class="log-dim"> DAQ &nbsp; fs=1000 Hz · 16ch · uint16 · buf=256</span></div>
+      <div><span class="log-info">[INFO] </span><span class="log-dim"> DSP &nbsp; bpf 20–450 Hz · notch 60 Hz · order=4</span></div>
+      <div><span class="log-info">[INFO] </span><span class="log-dim"> INFER backend=onnx · model=emg_intent_v3.onnx · 812 KB</span></div>
+      <div><span class="log-warn">[WARN] </span><span class="log-dim"> Clawssification instability detected, applying meow-jority vote.</span></div>
+      <div><span class="log-info">[INFO] </span><span class="log-run"> Running · 5s · ctrl-c to stop</span></div>
+    </div>
+
+    <div class="result-line">
+      <div class="result-badge">
+        <span class="result-val">PURR</span>
+        <span class="result-prob">p = 0.98</span>
+      </div>
+      <span class="result-aside">(feline confident)</span>
+    </div>
+
+    <div class="prompt-return">
+      <span class="host">biosignals</span><span class="at">@</span><span class="host">edge</span><span class="pr" style="margin-left:6px;">$</span>
+    </div>
+
+  </div>
+</div>

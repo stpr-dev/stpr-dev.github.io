@@ -6,6 +6,8 @@ title: Home
 
 Systems engineer working across the stack: hardware-level acquisition, signal processing, and edge inference for real-time biomedical systems.
 
+{% include banner.html %}
+
 I write here about technical investigations that I find very interesting and that go deeper than a README but don't fit the format of a paper — benchmarks, architecture decisions, dead ends, and the occasional systems programming rabbit hole.
 
 
