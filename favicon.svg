@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 110" width="100" height="110"><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:creator>RealFaviconGenerator</dc:creator><dc:source>https://realfavicongenerator.net</dc:source></rdf:Description></rdf:RDF></metadata><rect width="100" height="110" fill="#1e1e2e" rx="12"></rect><g stroke="#313244" stroke-width="0.4" opacity="0.7">
+    <line x1="0" y1="22" x2="100" y2="22"></line>
+    <line x1="0" y1="44" x2="100" y2="44"></line>
+    <line x1="0" y1="66" x2="100" y2="66"></line>
+    <line x1="0" y1="88" x2="100" y2="88"></line>
+    <line x1="22" y1="0" x2="22" y2="110"></line>
+    <line x1="44" y1="0" x2="44" y2="110"></line>
+    <line x1="66" y1="0" x2="66" y2="110"></line>
+    <line x1="88" y1="0" x2="88" y2="110"></line>
+  </g><g opacity="0.8">
+    <rect x="5" y="5" width="5" height="3" fill="#f38ba8" rx="1"></rect>
+    <text x="13" y="8.5" fill="#f38ba8" font-size="4" font-family="monospace">CH1</text>
+    <rect x="30" y="5" width="5" height="3" fill="#89dceb" rx="1"></rect>
+    <text x="38" y="8.5" fill="#89dceb" font-size="4" font-family="monospace">CH2</text>
+  </g><path d="M 0,60 L 14,60 L 17,53 L 20,70 L 23,57 L 26,60
+           L 23,39 L 15,23
+           L 36,31
+           A 26,26 0 0,1 64,31
+           L 85,23 L 77,39
+           L 74,60 L 77,57 L 80,70 L 83,53 L 86,60 L 100,60" fill="none" stroke="#f38ba8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><ellipse cx="38" cy="56" rx="4.5" ry="3" fill="#f38ba8" opacity="0.85"></ellipse><ellipse cx="38" cy="56" rx="3" ry="2.2" fill="#89dceb"></ellipse><ellipse cx="38" cy="56" rx="1" ry="2" fill="#1e1e2e"></ellipse><ellipse cx="62" cy="56" rx="4.5" ry="3" fill="#f38ba8" opacity="0.85"></ellipse><ellipse cx="62" cy="56" rx="3" ry="2.2" fill="#89dceb"></ellipse><ellipse cx="62" cy="56" rx="1" ry="2" fill="#1e1e2e"></ellipse><path d="M 32,62 L 16,58" fill="none" stroke="#89dceb" stroke-width="1" stroke-linecap="round"></path><path d="M 32,64 L 15,64" fill="none" stroke="#89dceb" stroke-width="1" stroke-linecap="round"></path><path d="M 32,66 L 16,70" fill="none" stroke="#89dceb" stroke-width="1" stroke-linecap="round"></path><path d="M 68,62 L 84,58" fill="none" stroke="#89dceb" stroke-width="1" stroke-linecap="round"></path><path d="M 68,64 L 85,64" fill="none" stroke="#89dceb" stroke-width="1" stroke-linecap="round"></path><path d="M 68,66 L 84,70" fill="none" stroke="#89dceb" stroke-width="1" stroke-linecap="round"></path><path d="M 48,63 L 50,61 L 52,63 Z" fill="#89dceb"></path><path d="M 46,65 Q 50,70 54,65" fill="none" stroke="#89dceb" stroke-width="1.2" stroke-linecap="round"></path></svg>
