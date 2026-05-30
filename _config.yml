@@ -3,7 +3,7 @@ description: >
   Systems engineer working across the stack: hardware-level acquisition, signal processing, and edge inference for real-time biomedical systems.
 url: "https://stpr-dev.github.io"
 
-theme: minimal-mistakes-jekyll
+remote_theme: "mmistakes/minimal-mistakes@4.28.0"
 minimal_mistakes_skin: catppuccin_mocha
 
 author:
