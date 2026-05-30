@@ -40,3 +40,15 @@ exclude:
 permalink: /:categories/:year/:month/:day/:title/
 
 show_excerpts: true
+
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      share: true
+      related: true
