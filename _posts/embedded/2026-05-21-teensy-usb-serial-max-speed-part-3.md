@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Teensy 4.1 USB Serial: What is the maximum throughput over USB serial? - Part 3"
 date: 2026-05-21
 categories: embedded
