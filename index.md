@@ -1,5 +1,5 @@
 ---
-layout: home
+layout: default
 title: Home
 ---
 
@@ -49,4 +49,3 @@ I write here about technical investigations that I find very interesting and tha
 **{{ series_posts.first.title | split: " — " | first }}**
 — {{ series_posts.size }} parts published, actively ongoing.
 Latest: [{{ latest.title | split: " — " | last }}]({{ latest.url }}) ({{ latest.date | date: "%b %Y" }})
-
