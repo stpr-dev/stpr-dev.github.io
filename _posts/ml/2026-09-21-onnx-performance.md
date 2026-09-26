@@ -1,7 +1,7 @@
 ---
 title: "Adventures in benchmarking ONNX Runtime performance"
 date: 2026-09-21
-categories: ml, embedded
+categories: [ml, embedded]
 series: onnxruntime-performance
 ---
 
