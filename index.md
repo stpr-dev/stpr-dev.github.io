@@ -44,7 +44,7 @@ I write here about technical investigations that I find very interesting and tha
 
 ## Ongoing Series
 
-{% assign featured_series = "teensy-serial" %}  <!-- change this to feature a different series -->
+{% assign featured_series = "onnxruntime-performance" %}  <!-- change this to feature a different series -->
 {% assign series_posts = site.posts | where: "series", featured_series | sort: "date" %}
 {% assign latest = series_posts | last %}
 
